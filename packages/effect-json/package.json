@@ -33,7 +33,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/PaulJPhilp/effect-json.git"
+    "url": "git+https://github.com/PaulJPhilp/effect-json.git"
   },
   "bugs": {
     "url": "https://github.com/PaulJPhilp/effect-json/issues"
