@@ -1,5 +1,9 @@
 # effect-json – Market Requirements Document
 
+> **Status**: ✅ Completed | **Version**: 0.1.0 Published | **Date**: October 2025
+>
+> This is a historical planning document. All requirements have been successfully implemented and the library is published on npm.
+
 ## Executive Summary
 
 **effect-json** is a type-safe, schema-driven JSON serialization library for TypeScript and Effect ecosystems. It solves the fundamental problem of safe, composable JSON handling by providing multiple serialization backends (JSON, JSONC, SuperJSON) with unified, Effect-based APIs.

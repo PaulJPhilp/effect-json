@@ -1,5 +1,9 @@
 # effect-json – Architecture
 
+> **Status**: ✅ Implemented | **Version**: 0.1.0 Published | **Date**: October 2025
+>
+> This is a historical architecture document. The described architecture has been successfully implemented. See [../packages/effect-json/ARCHITECTURE.md](../packages/effect-json/ARCHITECTURE.md) for current implementation details.
+
 ## High-Level Design
 
 ┌─────────────────────────────────────────────────────┐

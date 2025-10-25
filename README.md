@@ -9,6 +9,8 @@
 
 effect-json provides multiple serialization backends (JSON, JSONC, SuperJSON) unified under a single, Effect-native API with comprehensive error handling and schema validation.
 
+> **Status**: Production ready • Published on npm • v0.1.0
+
 ## Features
 
 - 🔒 **Type-safe**: Schema-driven validation using Effect.Schema
@@ -205,11 +207,12 @@ bun run typecheck
 
 - **Runtime**: Bun
 - **Monorepo**: Turborepo
-- **Testing**: Vitest (84 tests passing)
+- **Testing**: Vitest (84 tests, 85%+ coverage)
 - **Linting/Formatting**: Biome
 - **TypeScript**: Strict mode
 - **Effect**: Latest
 - **Bundling**: Vite
+- **CI/CD**: GitHub Actions (multi-platform testing, automated releases)
 
 ## Documentation
 
@@ -225,6 +228,48 @@ See the `/docs` directory for project planning:
 - `Architecture.md` - Technical design
 - `ImplementationPlan.md` - Development roadmap
 
+## Contributing
+
+Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for details on our development process, coding standards, and how to submit pull requests.
+
+### Quick Start for Contributors
+
+```bash
+# Clone the repository
+git clone https://github.com/PaulJPhilp/effect-json.git
+cd effect-json
+
+# Install dependencies
+bun install
+
+# Run tests
+bun test
+
+# Run linting
+bun run check
+
+# Build
+bun run build
+```
+
+See [CLAUDE.md](CLAUDE.md) for detailed development guidelines and architecture information.
+
+## Security
+
+Security issues should be reported privately. See our [Security Policy](SECURITY.md) for details.
+
 ## License
 
-MIT
+MIT © [Paul J. Philp](https://github.com/PaulJPhilp)
+
+## Links
+
+- **npm Package**: https://www.npmjs.com/package/effect-json
+- **GitHub Repository**: https://github.com/PaulJPhilp/effect-json
+- **Issue Tracker**: https://github.com/PaulJPhilp/effect-json/issues
+- **Discussions**: https://github.com/PaulJPhilp/effect-json/discussions
+- **Changelog**: [CHANGELOG.md](CHANGELOG.md)
+
+---
+
+Built with ❤️ using [Effect](https://effect.website) and [Bun](https://bun.sh)
