@@ -1,0 +1,134 @@
+{
+  // Golden test fixture for complex types (Date, Set, Map, BigInt)
+  // Primary focus: SuperJSON backend
+
+  "date_object": {
+    "data": {
+      "id": 1,
+      "event": "Launch",
+      "timestamp": "2025-01-01T00:00:00.000Z"
+    },
+    "__metadata": {
+      "description": "Object with Date (as ISO string for JSON, Date object for SuperJSON)",
+      "should_parse": true,
+      "should_validate": true,
+      "round_trip": true,
+      "backends": ["superjson"],
+      "schema_type": "DateFromSelf",
+      "note": "Use Schema.DateFromSelf for SuperJSON, Schema.Date for JSON strings"
+    }
+  },
+
+  "set_object": {
+    "data": {
+      "id": 2,
+      "tags": ["typescript", "effect", "json"]
+    },
+    "__metadata": {
+      "description": "Object with Set (array for JSON, Set for SuperJSON)",
+      "should_parse": true,
+      "should_validate": true,
+      "round_trip": true,
+      "backends": ["superjson"],
+      "note": "SuperJSON preserves Set type; JSON represents as array"
+    }
+  },
+
+  "map_object": {
+    "data": {
+      "id": 3,
+      "metadata": [["key1", "value1"], ["key2", "value2"], ["key3", "value3"]]
+    },
+    "__metadata": {
+      "description": "Object with Map (array of tuples for JSON, Map for SuperJSON)",
+      "should_parse": true,
+      "should_validate": true,
+      "round_trip": true,
+      "backends": ["superjson"],
+      "note": "SuperJSON preserves Map type"
+    }
+  },
+
+  "mixed_complex_types": {
+    "data": {
+      "id": 4,
+      "created_at": "2025-01-01T12:00:00.000Z",
+      "tags": ["backend", "frontend"],
+      "config": [["timeout", 5000], ["retries", 3]]
+    },
+    "__metadata": {
+      "description": "Object with Date, Set, and Map combined",
+      "should_parse": true,
+      "should_validate": true,
+      "round_trip": true,
+      "backends": ["superjson"]
+    }
+  },
+
+  "undefined_values": {
+    "data": {
+      "id": 5,
+      "name": "Test",
+      "optional": null
+    },
+    "__metadata": {
+      "description": "Object with undefined/null values",
+      "should_parse": true,
+      "should_validate": true,
+      "round_trip": false,
+      "backends": ["json", "jsonc", "superjson"],
+      "note": "JSON.stringify omits undefined; null is preserved"
+    }
+  },
+
+  "nan_infinity": {
+    "data": {
+      "id": 6,
+      "nan_value": "NaN",
+      "infinity": "Infinity",
+      "neg_infinity": "-Infinity"
+    },
+    "__metadata": {
+      "description": "Special numeric values (as strings in fixture - real NaN/Infinity tested separately)",
+      "should_parse": true,
+      "should_validate": true,
+      "round_trip": true,
+      "backends": ["superjson"],
+      "note": "SuperJSON can preserve actual NaN/Infinity; this fixture demonstrates the string representation"
+    }
+  },
+
+  "bigint_value": {
+    "data": {
+      "id": 7,
+      "large_number": "9007199254740991"
+    },
+    "__metadata": {
+      "description": "BigInt value (as string for JSON, BigInt for SuperJSON)",
+      "should_parse": true,
+      "should_validate": true,
+      "round_trip": true,
+      "backends": ["superjson"],
+      "note": "JSON represents BigInt as string; SuperJSON preserves type"
+    }
+  },
+
+  "nested_complex": {
+    "data": {
+      "id": 8,
+      "user": {
+        "name": "Paul",
+        "joined": "2025-01-01T00:00:00.000Z"
+      },
+      "permissions": ["read", "write"],
+      "settings": [["theme", "dark"], ["language", "en"]]
+    },
+    "__metadata": {
+      "description": "Nested object with complex types at multiple levels",
+      "should_parse": true,
+      "should_validate": true,
+      "round_trip": true,
+      "backends": ["superjson"]
+    }
+  }
+}

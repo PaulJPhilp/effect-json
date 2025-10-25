@@ -1,0 +1,124 @@
+{
+  // Golden test fixture for user data
+  // Tests: JSON/JSONC parsing, validation, round-trip guarantees
+
+  "valid_user": {
+    "data": {
+      "id": 1,
+      "name": "Paul",
+      "email": "paul@example.com"
+    },
+    "__metadata": {
+      "description": "Valid user with all required fields",
+      "should_parse": true,
+      "should_validate": true,
+      "round_trip": true,
+      "backends": ["json", "jsonc"]
+    }
+  },
+
+  "valid_user_with_comments": {
+    "data": {
+      // User ID (auto-generated)
+      "id": 2,
+      /* Full name for display */
+      "name": "Jane Doe",
+      "email": "jane@example.com" // Primary contact
+    },
+    "__metadata": {
+      "description": "User with JSONC comments (should be stripped)",
+      "should_parse": true,
+      "should_validate": true,
+      "round_trip": true,
+      "backends": ["jsonc"]
+    }
+  },
+
+  "missing_required_field": {
+    "data": {
+      "id": 3,
+      "name": "Missing Email"
+      // Note: email field is intentionally missing
+    },
+    "__metadata": {
+      "description": "User missing required email field",
+      "should_parse": true,
+      "should_validate": false,
+      "expected_error": "ValidationError",
+      "backends": ["json", "jsonc"]
+    }
+  },
+
+  "invalid_type": {
+    "data": {
+      "id": "not-a-number",
+      "name": "Invalid ID",
+      "email": "invalid@example.com"
+    },
+    "__metadata": {
+      "description": "User with wrong type for id field",
+      "should_parse": true,
+      "should_validate": false,
+      "expected_error": "ValidationError",
+      "backends": ["json", "jsonc"]
+    }
+  },
+
+  "extra_fields": {
+    "data": {
+      "id": 4,
+      "name": "Extra Fields",
+      "email": "extra@example.com",
+      "admin": true,
+      "created_at": "2025-01-01"
+    },
+    "__metadata": {
+      "description": "User with extra fields (should be allowed by default)",
+      "should_parse": true,
+      "should_validate": true,
+      "round_trip": false,
+      "note": "Extra fields may be stripped depending on schema settings",
+      "backends": ["json", "jsonc"]
+    }
+  },
+
+  "empty_name": {
+    "data": {
+      "id": 5,
+      "name": "",
+      "email": "empty@example.com"
+    },
+    "__metadata": {
+      "description": "User with empty name (valid string, schema allows)",
+      "should_parse": true,
+      "should_validate": true,
+      "round_trip": true,
+      "backends": ["json", "jsonc"]
+    }
+  },
+
+  "special_characters": {
+    "data": {
+      "id": 6,
+      "name": "José María O'Brien",
+      "email": "josé@example.com"
+    },
+    "__metadata": {
+      "description": "User with special characters (Unicode, apostrophes)",
+      "should_parse": true,
+      "should_validate": true,
+      "round_trip": true,
+      "backends": ["json", "jsonc"]
+    }
+  },
+
+  "malformed_json": {
+    "raw_input": "{\"id\": 1, invalid}",
+    "__metadata": {
+      "description": "Malformed JSON (syntax error)",
+      "should_parse": false,
+      "expected_error": "ParseError",
+      "backends": ["json", "jsonc"]
+    }
+  }
+}

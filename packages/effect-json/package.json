@@ -1,0 +1,73 @@
+{
+  "name": "effect-json",
+  "version": "0.1.0",
+  "description": "Type-safe, schema-driven JSON serialization for TypeScript and Effect",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "effect",
+    "json",
+    "schema",
+    "validation",
+    "typescript",
+    "superjson",
+    "jsonc",
+    "serialization",
+    "parsing"
+  ],
+  "author": "Paul J. Philp",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PaulJPhilp/effect-json.git"
+  },
+  "bugs": {
+    "url": "https://github.com/PaulJPhilp/effect-json/issues"
+  },
+  "homepage": "https://github.com/PaulJPhilp/effect-json#readme",
+  "scripts": {
+    "build": "vite build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist .turbo *.tsbuildinfo"
+  },
+  "dependencies": {
+    "effect": "latest"
+  },
+  "peerDependencies": {
+    "superjson": "^2.0.0"
+  },
+  "peerDependenciesMeta": {
+    "superjson": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@vitest/coverage-v8": "latest",
+    "superjson": "^2.0.0",
+    "typescript": "latest",
+    "vite": "latest",
+    "vitest": "latest"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
