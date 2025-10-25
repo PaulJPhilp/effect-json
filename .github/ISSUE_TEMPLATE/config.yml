@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Questions & Discussions
+    url: https://github.com/PaulJPhilp/effect-json/discussions
+    about: Ask questions and discuss ideas with the community
+  - name: Effect Discord
+    url: https://discord.gg/effect-ts
+    about: Join the Effect community on Discord

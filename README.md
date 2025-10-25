@@ -1,5 +1,10 @@
 # effect-json
 
+[![CI](https://github.com/PaulJPhilp/effect-json/actions/workflows/ci.yml/badge.svg)](https://github.com/PaulJPhilp/effect-json/actions/workflows/ci.yml)
+[![npm version](https://badge.fury.io/js/effect-json.svg)](https://www.npmjs.com/package/effect-json)
+[![codecov](https://codecov.io/gh/PaulJPhilp/effect-json/branch/main/graph/badge.svg)](https://codecov.io/gh/PaulJPhilp/effect-json)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 **Type-safe, schema-driven JSON serialization for TypeScript and Effect.**
 
 effect-json provides multiple serialization backends (JSON, JSONC, SuperJSON) unified under a single, Effect-native API with comprehensive error handling and schema validation.

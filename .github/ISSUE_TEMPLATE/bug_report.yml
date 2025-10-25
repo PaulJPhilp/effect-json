@@ -1,0 +1,118 @@
+name: Bug Report
+description: Report a bug or unexpected behavior
+title: "[Bug]: "
+labels: ["bug", "triage"]
+assignees:
+  - PaulJPhilp
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill out the information below to help us resolve the issue.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is.
+      placeholder: Tell us what happened
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Steps to reproduce the behavior
+      placeholder: |
+        1. Import '...'
+        2. Call function '...'
+        3. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+      placeholder: I expected...
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened?
+      placeholder: Instead, I got...
+    validations:
+      required: true
+
+  - type: textarea
+    id: code-sample
+    attributes:
+      label: Minimal Reproducible Example
+      description: Please provide a minimal code sample that reproduces the issue
+      placeholder: |
+        ```typescript
+        import * as Json from "effect-json";
+        import { Schema } from "effect";
+
+        // Your code here
+        ```
+      render: typescript
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: effect-json Version
+      description: What version of effect-json are you using?
+      placeholder: e.g., 0.1.0
+    validations:
+      required: true
+
+  - type: input
+    id: effect-version
+    attributes:
+      label: Effect Version
+      description: What version of Effect are you using?
+      placeholder: e.g., 3.x.x
+
+  - type: dropdown
+    id: backend
+    attributes:
+      label: Which backend?
+      description: Which JSON backend are you using?
+      options:
+        - JSON (standard)
+        - JSONC (with comments)
+        - SuperJSON
+        - Not sure
+      multiple: true
+
+  - type: input
+    id: runtime
+    attributes:
+      label: Runtime
+      description: What runtime are you using?
+      placeholder: e.g., Bun 1.0.0, Node.js 20.0.0
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Operating System
+      description: What OS are you using?
+      placeholder: e.g., macOS 14.0, Ubuntu 22.04, Windows 11
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Add any other context about the problem here
+      placeholder: Any additional information that might help
