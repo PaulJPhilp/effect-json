@@ -1,6 +1,6 @@
 {
   "name": "effect-json",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Type-safe, schema-driven JSON serialization for TypeScript and Effect",
   "type": "module",
   "main": "./dist/index.js",
