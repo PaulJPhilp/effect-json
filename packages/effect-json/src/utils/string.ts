@@ -5,6 +5,7 @@
 /**
  * Convert Buffer to string
  */
+// biome-ignore lint/suspicious/noShadowRestrictedNames: Intentional utility function name
 export const toString = (input: string | Buffer): string =>
   typeof input === "string" ? input : input.toString("utf-8");
 
@@ -27,7 +28,7 @@ export const buildSnippet = (input: string, position: number): string => {
 
     if (currentPos + lineLength >= position) {
       const column = position - currentPos;
-      const pointer = " ".repeat(column) + "^";
+      const pointer = `${" ".repeat(column)}^`;
       return `${line}\n${pointer}`;
     }
 

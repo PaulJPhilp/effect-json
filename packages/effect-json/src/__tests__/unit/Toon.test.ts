@@ -1,7 +1,7 @@
 import { Effect, Either, Schema } from "effect";
 import { describe, expect, it } from "vitest";
-import { parseToon, stringifyToon } from "../../Toon.js";
 import { ValidationError } from "../../errors.js";
+import { parseToon, stringifyToon } from "../../Toon.js";
 
 describe("Toon", () => {
   const User = Schema.Struct({
@@ -41,7 +41,7 @@ describe("Toon", () => {
         id: Schema.Number,
         name: Schema.String,
       });
-      
+
       const program = Effect.gen(function* () {
         const toon = yield* stringifyToon(PartialUser, invalidUser);
         // Now try to parse with full User schema
@@ -60,7 +60,7 @@ describe("Toon", () => {
 
     it("should fail validation before stringify if value doesn't match schema", async () => {
       const invalidUser = { id: 1, name: "Alice" } as unknown as User;
-      
+
       const program = stringifyToon(User, invalidUser);
       const result = await Effect.runPromise(Effect.either(program));
 

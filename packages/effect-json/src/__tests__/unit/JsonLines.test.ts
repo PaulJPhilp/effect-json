@@ -1,12 +1,12 @@
 import { Effect, Either, Schema, Stream } from "effect";
 import { describe, expect, it } from "vitest";
-import {
-    parseJsonLines,
-    streamParseJsonLines,
-    streamStringifyJsonLines,
-    stringifyJsonLines,
-} from "../../JsonLines.js";
 import { JsonLinesParseError, ValidationError } from "../../errors.js";
+import {
+  parseJsonLines,
+  streamParseJsonLines,
+  streamStringifyJsonLines,
+  stringifyJsonLines,
+} from "../../JsonLines.js";
 
 describe("JsonLines", () => {
   const User = Schema.Struct({
@@ -24,7 +24,8 @@ describe("JsonLines", () => {
 
   describe("parseJsonLines", () => {
     it("should parse valid JSONL and validate against schema", async () => {
-      const jsonl = '{"id":1,"name":"Alice","tags":["admin","beta"]}\n{"id":2,"name":"Bob","tags":["user"]}\n';
+      const jsonl =
+        '{"id":1,"name":"Alice","tags":["admin","beta"]}\n{"id":2,"name":"Bob","tags":["user"]}\n';
       const program = parseJsonLines(User, jsonl);
       const result = await Effect.runPromise(program);
 
@@ -32,7 +33,8 @@ describe("JsonLines", () => {
     });
 
     it("should skip blank lines", async () => {
-      const jsonl = '{"id":1,"name":"Alice","tags":["admin","beta"]}\n\n{"id":2,"name":"Bob","tags":["user"]}\n';
+      const jsonl =
+        '{"id":1,"name":"Alice","tags":["admin","beta"]}\n\n{"id":2,"name":"Bob","tags":["user"]}\n';
       const program = parseJsonLines(User, jsonl);
       const result = await Effect.runPromise(program);
 
@@ -187,9 +189,7 @@ describe("JsonLines", () => {
       const chunks = ['{"id":1,"name":"Alice","tags":[]}\n', "{invalid}\n"];
       const stream = Stream.fromIterable(chunks);
       const parsed = streamParseJsonLines(User, stream);
-      const result = await Effect.runPromise(
-        Effect.either(Stream.runCollect(parsed)),
-      );
+      const result = await Effect.runPromise(Effect.either(Stream.runCollect(parsed)));
 
       expect(Either.isLeft(result)).toBe(true);
       if (Either.isLeft(result)) {
@@ -205,9 +205,7 @@ describe("JsonLines", () => {
       ];
       const stream = Stream.fromIterable(chunks);
       const parsed = streamParseJsonLines(User, stream);
-      const result = await Effect.runPromise(
-        Effect.either(Stream.runCollect(parsed)),
-      );
+      const result = await Effect.runPromise(Effect.either(Stream.runCollect(parsed)));
 
       expect(Either.isLeft(result)).toBe(true);
       if (Either.isLeft(result)) {
@@ -241,9 +239,7 @@ describe("JsonLines", () => {
       const invalidUser = { id: 1, name: "Alice" } as unknown as User;
       const stream = Stream.fromIterable([invalidUser]);
       const stringified = streamStringifyJsonLines(User, stream);
-      const result = await Effect.runPromise(
-        Effect.either(Stream.runCollect(stringified)),
-      );
+      const result = await Effect.runPromise(Effect.either(Stream.runCollect(stringified)));
 
       expect(Either.isLeft(result)).toBe(true);
       if (Either.isLeft(result)) {

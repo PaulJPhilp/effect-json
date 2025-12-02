@@ -1,6 +1,11 @@
 import { Effect, Either, Stream } from "effect";
 import { describe, expect, it } from "vitest";
-import { parseBatch, parseStream, stringifyBatch, stringifyStream } from "../../../backends/jsonLines.js";
+import {
+  parseBatch,
+  parseStream,
+  stringifyBatch,
+  stringifyStream,
+} from "../../../backends/jsonLines.js";
 import { JsonLinesParseError } from "../../../errors.js";
 
 describe("jsonLines backend", () => {
@@ -78,14 +83,7 @@ describe("jsonLines backend", () => {
       const effect = parseBatch(input);
       const result = await Effect.runPromise(effect);
 
-      expect(result).toEqual([
-        { obj: "value" },
-        [1, 2, 3],
-        "string",
-        42,
-        true,
-        null,
-      ]);
+      expect(result).toEqual([{ obj: "value" }, [1, 2, 3], "string", 42, true, null]);
     });
   });
 
@@ -161,7 +159,7 @@ describe("jsonLines backend", () => {
     });
 
     it("should skip blank lines in stream", async () => {
-      const chunks = ['{"id":1}\n', '\n  \n', '{"id":2}\n'];
+      const chunks = ['{"id":1}\n', "\n  \n", '{"id":2}\n'];
       const stream = Stream.fromIterable(chunks);
       const parsed = parseStream(stream);
       const result = await Effect.runPromise(Stream.runCollect(parsed));
@@ -178,12 +176,10 @@ describe("jsonLines backend", () => {
     });
 
     it("should fail with JsonLinesParseError on invalid JSON in stream", async () => {
-      const chunks = ['{"id":1}\n', '{invalid}\n'];
+      const chunks = ['{"id":1}\n', "{invalid}\n"];
       const stream = Stream.fromIterable(chunks);
       const parsed = parseStream(stream);
-      const result = await Effect.runPromise(
-        Effect.either(Stream.runCollect(parsed)),
-      );
+      const result = await Effect.runPromise(Effect.either(Stream.runCollect(parsed)));
 
       expect(Either.isLeft(result)).toBe(true);
       if (Either.isLeft(result)) {
@@ -208,11 +204,7 @@ describe("jsonLines backend", () => {
       const stringified = stringifyStream(stream);
       const result = await Effect.runPromise(Stream.runCollect(stringified));
 
-      expect(Array.from(result)).toEqual([
-        '{"id":1}\n',
-        '{"id":2}\n',
-        '{"id":3}\n',
-      ]);
+      expect(Array.from(result)).toEqual(['{"id":1}\n', '{"id":2}\n', '{"id":3}\n']);
     });
 
     it("should emit nothing for empty stream", async () => {

@@ -57,4 +57,3 @@ export class JsonLinesParseError extends Data.TaggedError("JsonLinesParseError")
   readonly snippet: string; // error snippet from the line
   readonly cause?: Error;
 }> {}
-

@@ -7,14 +7,14 @@
  * This module provides both batch (array-based) and streaming APIs.
  */
 
-import { Effect, Stream, type Schema } from "effect";
+import { Effect, type Schema, Stream } from "effect";
 import {
-    parseBatch,
-    parseStream,
-    stringifyBatch,
-    type JsonLinesStringifyOptions
+  type JsonLinesStringifyOptions,
+  parseBatch,
+  parseStream,
+  stringifyBatch,
 } from "./backends/jsonLines.js";
-import { JsonLinesParseError, ValidationError } from "./errors.js";
+import { type JsonLinesParseError, ValidationError } from "./errors.js";
 import { validateAgainstSchema, validateForStringify } from "./schema.js";
 
 export type { JsonLinesStringifyOptions };
@@ -83,15 +83,16 @@ export const stringifyJsonLines = <A, I, R>(
     // Note: stringifyBatch can return ParseError but in practice shouldn't
     // since we're stringifying validated values. Map ParseError to ValidationError for type safety
     const result = yield* stringifyBatch(valuesArray, options).pipe(
-      Effect.mapError((error) => 
-        new ValidationError({
-          message: error.message,
-          schemaPath: "",
-          expected: "valid JSON",
-          actual: valuesArray,
-          cause: error.cause,
-        })
-      )
+      Effect.mapError(
+        (error) =>
+          new ValidationError({
+            message: error.message,
+            schemaPath: "",
+            expected: "valid JSON",
+            actual: valuesArray,
+            cause: error.cause,
+          }),
+      ),
     );
     return result;
   });
@@ -118,9 +119,7 @@ export const streamParseJsonLines = <A, I, R>(
   schema: Schema.Schema<A, I, R>,
   input: Stream.Stream<string, never, R>,
 ): Stream.Stream<A, JsonLinesParseError | ValidationError, R> =>
-  parseStream(input).pipe(
-    Stream.mapEffect((raw) => validateAgainstSchema(schema, raw as I)),
-  );
+  parseStream(input).pipe(Stream.mapEffect((raw) => validateAgainstSchema(schema, raw as I)));
 
 /**
  * Stringify stream of values to JSON Lines with schema validation
@@ -153,10 +152,9 @@ export const streamStringifyJsonLines = <A, I, R>(
         yield* validateForStringify(schema, value);
         // Then stringify
         const stringified = yield* Effect.try({
-          try: () => JSON.stringify(value, null, options?.indent ?? 0) + "\n",
+          try: () => `${JSON.stringify(value, null, options?.indent ?? 0)}\n`,
           catch: (error) => {
-            const errorMessage =
-              error instanceof Error ? error.message : String(error);
+            const errorMessage = error instanceof Error ? error.message : String(error);
             return new ValidationError({
               message: `Failed to stringify value: ${errorMessage}`,
               schemaPath: "",
@@ -170,5 +168,3 @@ export const streamStringifyJsonLines = <A, I, R>(
       }),
     ),
   );
-
-

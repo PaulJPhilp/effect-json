@@ -6,6 +6,7 @@
 
 import { Effect, Stream } from "effect";
 import { JsonLinesParseError, ParseError } from "../errors.js";
+// biome-ignore lint/suspicious/noShadowRestrictedNames: toString is an intentional utility function name
 import { buildSnippet, getLineColumn, toString } from "../utils/index.js";
 
 /**
@@ -29,10 +30,7 @@ const splitLines = (input: string): ReadonlyArray<string> => {
  *
  * Returns Effect with JsonLinesParseError including line number
  */
-const parseLine = (
-  line: string,
-  lineNumber: number,
-): Effect.Effect<unknown, JsonLinesParseError> =>
+const parseLine = (line: string, lineNumber: number): Effect.Effect<unknown, JsonLinesParseError> =>
   Effect.try({
     try: () => JSON.parse(line) as unknown,
     catch: (error) => {
@@ -97,10 +95,8 @@ export const stringifyBatch = (
 
   return Effect.try({
     try: () => {
-      const lines = valuesArray.map((value) =>
-        JSON.stringify(value, null, options?.indent ?? 0),
-      );
-      return lines.join("\n") + "\n"; // Trailing newline is conventional
+      const lines = valuesArray.map((value) => JSON.stringify(value, null, options?.indent ?? 0));
+      return `${lines.join("\n")}\n`; // Trailing newline is conventional
     },
     catch: (error) => {
       const errorMessage = error instanceof Error ? error.message : String(error);
@@ -132,7 +128,7 @@ class LineBuffer {
     const lines: Array<{ line: string; lineNumber: number }> = [];
 
     // Find all complete lines (up to last \n)
-    let lastNewlineIndex = this.buffer.lastIndexOf("\n");
+    const lastNewlineIndex = this.buffer.lastIndexOf("\n");
 
     if (lastNewlineIndex === -1) {
       // No complete lines yet
@@ -204,10 +200,9 @@ export const stringifyStream = <R>(
   values.pipe(
     Stream.mapEffect((value) =>
       Effect.try({
-        try: () => JSON.stringify(value, null, options?.indent ?? 0) + "\n",
+        try: () => `${JSON.stringify(value, null, options?.indent ?? 0)}\n`,
         catch: (error) => {
-          const errorMessage =
-            error instanceof Error ? error.message : String(error);
+          const errorMessage = error instanceof Error ? error.message : String(error);
           return new ParseError({
             message: `Failed to stringify value: ${errorMessage}`,
             line: 1,

@@ -4,6 +4,7 @@
  * Strips single-line (//) and multi-line (/* *\/) comments before parsing
  */
 
+// biome-ignore lint/suspicious/noShadowRestrictedNames: toString is an intentional utility function name
 import { stripComments, toString } from "../utils/index.js";
 import { jsonBackend } from "./json.js";
 import type { Backend } from "./types.js";

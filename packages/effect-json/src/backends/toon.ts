@@ -5,6 +5,7 @@
 import { decode, encode } from "@toon-format/toon";
 import { Effect } from "effect";
 import { ParseError, StringifyError } from "../errors.js";
+// biome-ignore lint/suspicious/noShadowRestrictedNames: toString is an intentional utility function name
 import { buildSnippet, getLineColumn, toString } from "../utils/index.js";
 import type { Backend } from "./types.js";
 

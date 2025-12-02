@@ -44,8 +44,9 @@ export const stringifyToon = <A, I>(
 ): Effect.Effect<string, StringifyError | ValidationError> =>
   Effect.gen(function* () {
     yield* validateForStringify(schema, value);
-    // Cast options to any to satisfy the backend interface which expects StringifyOptions
-    // In a real scenario, we might want to align these types better
-    const result = yield* toonBackend.stringify(value, options as any);
+    // Cast options to StringifyOptions to satisfy the backend interface
+    // ToonEncodeOptions is more permissive (Record<string, unknown>)
+    // but is compatible with StringifyOptions ({ indent?: number })
+    const result = yield* toonBackend.stringify(value, options as { indent?: number } | undefined);
     return result;
   });

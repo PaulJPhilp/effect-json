@@ -66,7 +66,7 @@ describe("Error Recovery Patterns", () => {
       const badJson = '{"id": 1, invalid}';
 
       const effect = Json.parse(UserSchema, badJson).pipe(
-        Effect.catchTag("ValidationError", (err) => {
+        Effect.catchTag("ValidationError", (_err) => {
           // Won't be called (this is a ParseError)
           return Effect.succeed({ ...DEFAULT_USER, name: "From ValidationError" });
         }),

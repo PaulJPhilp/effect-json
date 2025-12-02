@@ -7,8 +7,9 @@
 
 import { Effect } from "effect";
 import { ParseError, StringifyError } from "../errors.js";
+// biome-ignore lint/suspicious/noShadowRestrictedNames: toString is an intentional utility function name
 import { toString } from "../utils/index.js";
-import type { Backend, StringifyOptions } from "./types.js";
+import type { Backend } from "./types.js";
 
 /**
  * Lazily import superjson to avoid hard dependency

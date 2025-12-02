@@ -25,29 +25,29 @@ describe("toonBackend", () => {
       const stringVal = "hello";
       expect(
         await Effect.runPromise(
-          toonBackend.stringify(stringVal).pipe(Effect.flatMap(toonBackend.parse))
-        )
+          toonBackend.stringify(stringVal).pipe(Effect.flatMap(toonBackend.parse)),
+        ),
       ).toBe(stringVal);
 
       const numberVal = 42;
       expect(
         await Effect.runPromise(
-          toonBackend.stringify(numberVal).pipe(Effect.flatMap(toonBackend.parse))
-        )
+          toonBackend.stringify(numberVal).pipe(Effect.flatMap(toonBackend.parse)),
+        ),
       ).toBe(numberVal);
 
       const booleanVal = true;
       expect(
         await Effect.runPromise(
-          toonBackend.stringify(booleanVal).pipe(Effect.flatMap(toonBackend.parse))
-        )
+          toonBackend.stringify(booleanVal).pipe(Effect.flatMap(toonBackend.parse)),
+        ),
       ).toBe(booleanVal);
 
       const nullVal = null;
       expect(
         await Effect.runPromise(
-          toonBackend.stringify(nullVal).pipe(Effect.flatMap(toonBackend.parse))
-        )
+          toonBackend.stringify(nullVal).pipe(Effect.flatMap(toonBackend.parse)),
+        ),
       ).toBe(nullVal);
     });
   });
@@ -81,8 +81,8 @@ describe("toonBackend", () => {
     // or that it returns *something* for arbitrary strings.
     it("should return ParseError (or succeed) but not throw", async () => {
       const effect = toonBackend.parse("some random string");
-      const result = await Effect.runPromise(Effect.either(effect));
-      
+      const _result = await Effect.runPromise(Effect.either(effect));
+
       // We don't enforce success or failure, just that it doesn't crash
       expect(true).toBe(true);
     });
