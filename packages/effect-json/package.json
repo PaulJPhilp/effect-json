@@ -10,6 +10,14 @@
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
+    },
+    "./Toon": {
+      "import": "./dist/Toon.js",
+      "types": "./dist/Toon.d.ts"
+    },
+    "./JsonLines": {
+      "import": "./dist/JsonLines.js",
+      "types": "./dist/JsonLines.d.ts"
     }
   },
   "files": [
@@ -26,6 +34,8 @@
     "typescript",
     "superjson",
     "jsonc",
+    "jsonl",
+    "ndjson",
     "serialization",
     "parsing"
   ],
@@ -49,6 +59,7 @@
     "clean": "rm -rf dist .turbo *.tsbuildinfo"
   },
   "dependencies": {
+    "@toon-format/toon": "^2.0.1",
     "effect": "latest"
   },
   "peerDependencies": {

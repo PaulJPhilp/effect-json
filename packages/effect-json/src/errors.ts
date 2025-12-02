@@ -43,3 +43,18 @@ export class StringifyError extends Data.TaggedError("StringifyError")<{
   readonly reason: "schema_mismatch" | "type_error" | "cycle" | "unknown";
   readonly cause?: Error;
 }> {}
+
+/**
+ * JsonLinesParseError - Thrown when JSON Lines parsing fails
+ *
+ * Includes line number (which line in the JSONL) and position within that line
+ */
+export class JsonLinesParseError extends Data.TaggedError("JsonLinesParseError")<{
+  readonly message: string;
+  readonly lineNumber: number; // 1-indexed line number in the JSONL file
+  readonly line: number; // position within the line (for compatibility)
+  readonly column: number; // column within the line
+  readonly snippet: string; // error snippet from the line
+  readonly cause?: Error;
+}> {}
+

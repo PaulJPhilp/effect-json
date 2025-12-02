@@ -7,17 +7,17 @@
 
 **Type-safe, schema-driven JSON serialization for TypeScript and Effect.**
 
-effect-json provides multiple serialization backends (JSON, JSONC, SuperJSON) unified under a single, Effect-native API with comprehensive error handling and schema validation.
+effect-json provides multiple serialization backends (JSON, JSONC, SuperJSON, JSON Lines) unified under a single, Effect-native API with comprehensive error handling and schema validation.
 
 > **Status**: Production ready • Published on npm • v0.1.0
 
 ## Features
 
 - 🔒 **Type-safe**: Schema-driven validation using Effect.Schema
-- 🎯 **Multiple backends**: JSON (strict), JSONC (with comments), SuperJSON (type-preserving)
+- 🎯 **Multiple backends**: JSON (strict), JSONC (with comments), SuperJSON (type-preserving), JSON Lines (streaming/batch), TOON (experimental)
 - ⚡ **Effect-native**: All operations return Effects for composability
 - 📍 **Precise errors**: Line/column information for parse errors, detailed validation errors
-- 🧪 **Fully tested**: 84 tests with comprehensive coverage
+- 🧪 **Fully tested**: 136 tests with comprehensive coverage
 - 🔌 **Pluggable**: Extensible backend system
 
 ## Installation
@@ -94,6 +94,98 @@ const reparsed = await Effect.runPromise(
 // reparsed.createdAt is a Date object
 ```
 
+### TOON Backend (Experimental)
+
+TOON is a compact, human-readable encoding of the JSON data model, optimized for LLM prompts and responses.
+
+> **Note**: The TOON integration is **experimental** and subject to change as the TOON specification and ecosystem evolve.
+
+```typescript
+import { Effect, Schema } from "effect";
+import { parseToon, stringifyToon } from "effect-json/Toon";
+
+const User = Schema.Struct({
+  id: Schema.Number,
+  name: Schema.String,
+  tags: Schema.Array(Schema.String)
+});
+
+type User = Schema.Schema.Type<typeof User>;
+
+const user: User = {
+  id: 1,
+  name: "Alice",
+  tags: ["admin", "beta"]
+};
+
+// Domain type -> TOON string
+const program = stringifyToon(User, user).pipe(
+  Effect.tap((toon) => Effect.log("TOON:", toon)),
+  Effect.flatMap((toon) => parseToon(User, toon)), // TOON string -> domain type
+);
+
+// Run with your Effect runtime...
+await Effect.runPromise(program);
+```
+
+### JSON Lines (JSONL/NDJSON)
+
+JSON Lines is a format for storing structured data where each line is a valid JSON value. It's commonly used for logs, event streams, and LLM training datasets.
+
+#### Batch API (Arrays)
+
+```typescript
+import { Effect, Schema } from "effect";
+import { parseJsonLines, stringifyJsonLines } from "effect-json/JsonLines";
+
+const Event = Schema.Struct({
+  id: Schema.String,
+  level: Schema.Literal("info", "warn", "error"),
+  message: Schema.String
+});
+
+const events = [
+  { id: "1", level: "info" as const, message: "Started" },
+  { id: "2", level: "error" as const, message: "Boom" }
+];
+
+const program = stringifyJsonLines(Event, events).pipe(
+  Effect.tap((jsonl) => Effect.log("JSONL:\n" + jsonl)),
+  Effect.flatMap((jsonl) => parseJsonLines(Event, jsonl)),
+  Effect.tap((parsed) => Effect.log("Parsed:", parsed))
+);
+
+await Effect.runPromise(program);
+// Output:
+// JSONL:
+// {"id":"1","level":"info","message":"Started"}
+// {"id":"2","level":"error","message":"Boom"}
+```
+
+#### Streaming API (Large Files)
+
+```typescript
+import { Stream } from "effect";
+import { streamParseJsonLines, streamStringifyJsonLines } from "effect-json/JsonLines";
+
+// Parse stream of JSONL chunks (handles arbitrary chunk splits)
+const jsonlChunks = Stream.fromIterable([
+  '{"id":"1","level":"info","message":"Started"}\n{"id":"',
+  '2","level":"error","message":"Boom"}\n'
+]);
+
+const parsedEvents = streamParseJsonLines(Event, jsonlChunks);
+
+const program = parsedEvents.pipe(
+  Stream.tap((e) => Stream.fromEffect(Effect.log("Event:", e))),
+  Stream.runCollect
+);
+
+await Effect.runPromise(program);
+```
+
+```
+
 ### Error Handling
 
 effect-json uses Effect's powerful error handling capabilities. All functions return `Effect<Success, Error>` which you can handle using:
@@ -155,16 +247,23 @@ const user = await Effect.runPromise(effect);
 - `parse(schema, input)` - Parse JSON with schema validation
 - `parseJsonc(schema, input)` - Parse JSONC (strips comments)
 - `parseSuperjson(schema, input)` - Parse SuperJSON with type preservation
+- `parseToon(schema, input)` - Parse TOON string (experimental)
+- `parseJsonLines(schema, input)` - Parse JSON Lines (JSONL/NDJSON) batch
+- `streamParseJsonLines(schema, inputStream)` - Parse JSON Lines stream
 
 ### Stringify Functions
 
 - `stringify(schema, value, options?)` - Stringify to JSON
 - `stringifyJsonc(schema, value, options?)` - Stringify to JSON (same as stringify)
 - `stringifySuperjson(schema, value, options?)` - Stringify with type metadata
+- `stringifyToon(schema, value, options?)` - Stringify to TOON (experimental)
+- `stringifyJsonLines(schema, values, options?)` - Stringify array to JSON Lines
+- `streamStringifyJsonLines(schema, valuesStream, options?)` - Stringify stream to JSON Lines
 
 ### Error Types
 
 - `ParseError` - JSON parsing failed (includes line/column)
+- `JsonLinesParseError` - JSON Lines parsing failed (includes line number)
 - `ValidationError` - Schema validation failed
 - `StringifyError` - Stringification failed (e.g., circular references)
 
@@ -207,7 +306,7 @@ bun run typecheck
 
 - **Runtime**: Bun
 - **Monorepo**: Turborepo
-- **Testing**: Vitest (84 tests, 85%+ coverage)
+- **Testing**: Vitest (136 tests, 85%+ coverage)
 - **Linting/Formatting**: Biome
 - **TypeScript**: Strict mode
 - **Effect**: Latest

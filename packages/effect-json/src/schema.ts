@@ -12,10 +12,10 @@ import { ValidationError } from "./errors.js";
  *
  * Wraps Schema.decode with ValidationError
  */
-export const validateAgainstSchema = <A, I>(
-  schema: Schema.Schema<A, I>,
+export const validateAgainstSchema = <A, I, R = never>(
+  schema: Schema.Schema<A, I, R>,
   data: I,
-): Effect.Effect<A, ValidationError> =>
+): Effect.Effect<A, ValidationError, R> =>
   Schema.decode(schema)(data).pipe(
     Effect.mapError((parseError) => {
       // Extract path information from ParseError
@@ -36,10 +36,10 @@ export const validateAgainstSchema = <A, I>(
  *
  * Uses Schema.encode to validate that data can be encoded
  */
-export const validateForStringify = <A, I>(
-  schema: Schema.Schema<A, I>,
+export const validateForStringify = <A, I, R = never>(
+  schema: Schema.Schema<A, I, R>,
   data: A,
-): Effect.Effect<A, ValidationError> =>
+): Effect.Effect<A, ValidationError, R> =>
   Schema.encode(schema)(data).pipe(
     Effect.map(() => data),
     Effect.mapError((parseError) => {
